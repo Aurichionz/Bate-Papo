@@ -1,0 +1,43 @@
+# 💬 Chat Redes — Sistema de Salas de Bate-Papo em Tempo Real
+
+Este projeto foi desenvolvido seguindo os **conceitos e requisitos propostos pelo professor**, com o objetivo de criar um **sistema de chat em tempo real** utilizando **Node.js, Express e Socket.IO**. 
+O sistema permite a comunicação entre usuários dentro de **salas separadas**, com interface web e estilo personalizado.
+
+## Objetivos do Projeto
+
+O sistema foi construído para contemplar os seguintes pontos:
+
+### Requisitos Atendidos
+- **Sistema de Salas de Chat:**  
+  Os usuários podem escolher entre diferentes salas. 
+  As mensagens enviadas em uma sala **não aparecem nas outras**.
+  
+- **Entrar e Sair de Salas:**  
+  O usuário escolhe a sala e o nome antes de entrar. Pode sair retornando à página inicial.
+
+- **Comunicação em Tempo Real:**  
+  Toda comunicação é feita com **WebSockets (Socket.IO)**, garantindo **atualização instantânea** das mensagens entre os usuários da mesma sala.
+
+- **Interface Web (Frontend):**  
+  Interface criada com **HTML, CSS e JavaScript puro**, com uma pegada visual **suave e fofa** (tons rosados, animações e layout centralizado).
+
+## Estrutura do Projeto
+- server.ts #Backend com Node.js, Express e Socket.IO.
+- index.html #Página principal do chat.
+- entrada.html #tela inicial para nome e seleção da sala.
+
+## ⚙️ Tecnologias Utilizadas
+
+- **Node.js** — servidor backend
+- **Express** — framework para gerenciar rotas HTTP
+- **Socket.IO** — comunicação em tempo real via WebSockets
+- **HTML5 / CSS3 / JavaScript** — interface do cliente
+
+## 🚀 Como Executar o Projeto
+
+1. **Clonar o repositório:**
+   ```bash
+   git clone https://github.com/Aurichionz/Bate-Papo.git
+   cd chat-redes
+   npm install
+   yarn dev ou npm run dev
