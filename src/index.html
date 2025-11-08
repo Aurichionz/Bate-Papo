@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Chat Redes</title>
+  <style>
+    body {
+      background-color: #e2b2c5;
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .chat-container {
+      background-color: #fff0f6;
+      border: 3px solid #ffb6c1;
+      border-radius: 20px;
+      width: 370px;
+      height: 520px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 15px rgba(255, 182, 193, 0.7);
+      position: relative;
+      padding: 10px;
+    }
+
+    .chat-container::before {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      background: #ffe6f0;
+      padding: 3px 10px;
+      border-radius: 20px;
+      color: #ff69b4;
+      font-weight: bold;
+    }
+
+    #messages {
+      list-style: none;
+      padding: 10px;
+      overflow-y: auto;
+      flex: 1;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #messages li {
+      max-width: 70%;
+      padding: 8px 12px;
+      border-radius: 20px;
+      box-shadow: 0 2px 5px rgba(255, 182, 193, 0.4);
+      word-wrap: break-word;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .other {
+      background-color: #ffd6eb;
+      align-self: flex-start;
+      border-bottom-left-radius: 5px;
+    }
+    .me {
+      background-color: #ff99c8;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 5px;
+    }
+
+    #form {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    #input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 20px;
+      border: 2px solid #ffb6c1;
+      outline: none;
+      background-color: #fffafc;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    #input:focus {
+      border-color: #ff80ab;
+      box-shadow: 0 0 5px #ffb6c1;
+    }
+
+    button {
+      background-color: #ffb6c1;
+      border: none;
+      color: white;
+      border-radius: 20px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff99bb;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #messages::-webkit-scrollbar {
+      width: 8px;
+    }
+    #messages::-webkit-scrollbar-thumb {
+      background-color: #ffb6c1;
+      border-radius: 10px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" placeholder=" " />
+      <button>💌</button>
+    </form>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    const messageList = document.getElementById('messages');
+    const input = document.getElementById('input');
+    const form = document.getElementById('form');
+
+    const username = prompt("Digite seu nome") || "Você";
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (input.value.trim()) {
+        socket.emit('message', { user: username, text: input.value });
+        input.value = '';
+      }
+    });
+
+    socket.on('message', function (msg) {
+      const li = document.createElement('li');
+      li.textContent = `${msg.user}: ${msg.text}`;
+
+      if (msg.user === username) {
+        li.classList.add('me');
+      } else {
+        li.classList.add('other');
+      }
+
+      messageList.appendChild(li);
+      messageList.scrollTop = messageList.scrollHeight;
+    });
+  </script>
+</body>
+</html>
