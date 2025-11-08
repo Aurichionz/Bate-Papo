@@ -1,0 +1,97 @@
+<style>
+    body {
+      background-color: #e2b2c5;
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-container {
+      background-color: #fff0f6;
+      border: 3px solid #ffb6c1;
+      border-radius: 20px;
+      width: 350px;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(255, 182, 193, 0.7);
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    h2 {
+      color: #ff69b4;
+      margin-bottom: 20px;
+      font-size: 1.6em;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ffb6c1;
+      border-radius: 20px;
+      margin-bottom: 15px;
+      font-size: 1em;
+      outline: none;
+      background-color: #fffafc;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #ff80ab;
+      box-shadow: 0 0 5px #ffb6c1;
+    }
+
+    button {
+      background-color: #ffb6c1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #ff99bb;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2> Bem-vindo ao Chat!</h2>
+    <input type="text" id="name" placeholder="Digite seu nome" required>
+    <select id="room">
+      <option value="">Selecione uma sala</option>
+      <option value="Sala 1">Sala 1</option>
+      <option value="Sala 2">Sala 2</option>
+      <option value="Sala 3">Sala 3</option>
+    </select>
+    <button id="enterBtn">Entrar</button>
+  </div>
+
+  <script>
+    document.getElementById('enterBtn').addEventListener('click', () => {
+      const nome = document.getElementById('name').value.trim();
+      const sala = document.getElementById('room').value;
+      if (!nome || !sala) {
+        alert('Por favor, preencha seu nome e escolha uma sala!');
+        return;
+      }
+      window.location.href = `/chat?name=${encodeURIComponent(nome)}&room=${encodeURIComponent(sala)}`;
+    });
+  </script>
+</body>
+</html>

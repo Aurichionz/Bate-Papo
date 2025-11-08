@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Chat Redes</title>
+  <title>Chat Redes</title>
   <style>
     body {
       background-color: #e2b2c5;
@@ -28,17 +28,11 @@
       padding: 10px;
     }
 
-    .chat-container::before {
-      position: absolute;
-      top: -25px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 16px;
-      background: #ffe6f0;
-      padding: 3px 10px;
-      border-radius: 20px;
+    .chat-header {
+      text-align: center;
       color: #ff69b4;
       font-weight: bold;
+      margin-bottom: 8px;
     }
 
     #messages {
@@ -61,16 +55,18 @@
       animation: fadeIn 0.3s ease-in;
     }
 
-    .other {
-      background-color: #ffd6eb;
-      align-self: flex-start;
-      border-bottom-left-radius: 5px;
-    }
     .me {
       background-color: #ff99c8;
       color: white;
       align-self: flex-end;
       border-bottom-right-radius: 5px;
+    }
+
+    .other {
+      background-color: #ffd6eb;
+      color: #333;
+      align-self: flex-start;
+      border-bottom-left-radius: 5px;
     }
 
     #form {
@@ -128,39 +124,42 @@
 </head>
 <body>
   <div class="chat-container">
+    <div class="chat-header" id="roomName"></div>
     <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" placeholder=" " />
+    <form id="form">
+      <input id="input" autocomplete="off" placeholder="Digite sua mensagem..." />
       <button>💌</button>
     </form>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io();
+    const params = new URLSearchParams(window.location.search);
+    const username = params.get('name') || "Usuário";
+    const room = params.get('room') || "Sala 1";
+
+    document.getElementById('roomName').textContent = `💬 ${room}`;
+
+    const socket = io();
     const messageList = document.getElementById('messages');
     const input = document.getElementById('input');
     const form = document.getElementById('form');
 
-    const username = prompt("Digite seu nome") || "Você";
+    socket.emit('joinRoom', { user: username, room: room });
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (input.value.trim()) {
-        socket.emit('message', { user: username, text: input.value });
+        socket.emit('message', { user: username, text: input.value, room: room });
         input.value = '';
       }
     });
 
-    socket.on('message', function (msg) {
+    socket.on('message', (msg) => {
       const li = document.createElement('li');
       li.textContent = `${msg.user}: ${msg.text}`;
 
-      if (msg.user === username) {
-        li.classList.add('me');
-      } else {
-        li.classList.add('other');
-      }
+      li.classList.add(msg.user === username ? 'me' : 'other');
 
       messageList.appendChild(li);
       messageList.scrollTop = messageList.scrollHeight;
